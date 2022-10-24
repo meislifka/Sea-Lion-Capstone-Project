@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+   <div class="about">
+      <h1><left>What is SeeLion?</left></h1>
+      <p><left>Seelion is a student run project run by Villanova Unviersity's senior capstone class. This project aims to learn more about the endangered population of Galapagos sea lions in the 
+        hopes to help preserve the species and strengthen the ecosystem they live in. Our application will serve as a safe tracking methodology for the species, that is effective yet also
+        respects the restrictions placed on approaching and tagging the animals. The preservation of these animals is essential in maintaining balance in the Galapagos and to promoting
+        species preservation across the globe. With the development of this project, scientists can track sea lion breeding patterns, determine if they visit certain beaches during
+        different times of the year, understand their feeding habits, and many other behavioral tendencies. An enhanced understanding of the species alone will aid in the discovery of 
+        what is diminishing their population and how it can be stopped. Moving Galapagos sea lions out of the endangered category is a goal for many scientists and residents of the Galapagos,
+         broadening the scope and motivation behind our project.</left></p>
+      
+      <h1>Who can use SeeLion?</h1>   
+      <p></p>
+
+
+      <h1>About the Species</h1>   
+      <p>Sea lions play an important role in the ecosystem on the Galapagos Islands, however they are endangered and the direct cause of their endangerment is unknown. The increasing human population is speculated to be a cause, but many of the factors remain unidentified. Endangered species are at the forefront of global environmental concerns. The preservation of these animals is essential in maintaining balance in the Galapagos and to promoting species preservation across the globe. With the development of this project, scientists can track sea lion breeding patterns, determine if they visit certain beaches during different times of the year, understand their feeding habits, and many other behavioral tendencies. An enhanced understanding of the species alone will aid in the discovery of what is diminishing their population and how it can be stopped. Moving Galapagos sea lions out of the endangered category is a goal for many scientists and residents of the Galapagos, broadening the scope and motivation behind our project. </p>
+
+      <p> </p>
+      
+      <video width="640" height="480" controls>
+          <source src={{ url_for('static', filename="GalapIsland.mp4") }} type="video/mp4">
+</video>
+  
+      
+   </div>
+ {% endblock %}

@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="home">
+  
+    <h1> MACHINE LEARNING & CITIZEN SCIENCE & CONSERVATION RESEARCH </h1>
+    <p>SeeLion uses an Altered deepstack facial recongition algorithm to identify the faces of sea lions. We help researches identify sealions 
+      of the Galapagos Islands to help the learn why the species is endangered.
+    </p> 
+    
+    
+    <img src="{{url_for('static', filename='sealion.jpg')}}" align="middle" />
+    <video width="640" height="480" controls>
+      <source src={{ url_for('static', filename="IMG_2532.MOV") }} type="video/mp4">
+  </div>
+{% endblock %}
