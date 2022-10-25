@@ -1,3 +1,4 @@
+from re import template
 from flask import Flask, render_template, redirect, url_for, request
 import sqlite3
 app = Flask(__name__)
@@ -5,7 +6,7 @@ con = sqlite3.connect("sealions.db")
 db = con.cursor()
 # db.execute("CREATE TABLE sealions(name, age)")
 # db.execute("INSERT INTO sealions(name, age) VALUES('John', '21')")
-con.commit()
+# con.commit()
 info = db.execute("SELECT name FROM sealions")
 info = info.fetchall()
 @app.route('/')
@@ -26,6 +27,13 @@ def login():
             return redirect(url_for('home'))
     return render_template('login.html', error=error)
 
+@app.route('/encounter', methods=['GET','POST'])
+def encounter():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        return render_template('encounterpost.html', name=name)
+    else:
+        return render_template('encounter.html')
 
 
 if __name__ == '__main__':
