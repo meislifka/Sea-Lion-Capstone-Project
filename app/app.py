@@ -1,12 +1,36 @@
 from re import template
+from tkinter.tix import INTEGER, TEXT
 from flask import Flask, render_template, redirect, url_for, request
 import sqlite3
 app = Flask(__name__)
 con = sqlite3.connect("sealions.db")
 db = con.cursor()
-# db.execute("CREATE TABLE sealions(name, age)")
+# db.execute("CREATE TABLE sealions(sealionID, sex, encounter)")
+# db.execute("CREATE TABLE encounters(encounter, sealionID, year, month, day, timeofday, location)")
 # db.execute("INSERT INTO sealions(name, age) VALUES('John', '21')")
 # con.commit()
+# CREATE TABLE sealion
+#(
+#    id INTEGER,
+#    sex TEXT,
+#    encounter TEXT,
+#    encounter_id INTEGER,
+#    PRIMARY KEY(id),
+#    FOREGIN KEY(encounter_id) REFERENCES encounters(id)
+#);
+
+# CREATE TABLE encounter
+#(
+#    id INTEGER,
+#    sealion_id INTEGER,
+#    year INTEGER,
+#    month INTEGER,
+#    day INTEGER,
+#    timeofday INTEGER,
+#    location TEXT,
+#    PRIMARY KEY(id),
+#    FOREGIN KEY(sealion_id) REFERENCES sealion(id)
+#);
 info = db.execute("SELECT name FROM sealions")
 info = info.fetchall()
 @app.route('/')
