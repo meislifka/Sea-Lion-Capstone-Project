@@ -23,6 +23,7 @@ db = con.cursor()
 # CREATE TABLE encounter
 #(
 #    id INTEGER,
+#    user TEXT,
 #    sealion_id INTEGER,
 #    year INTEGER,
 #    month INTEGER,
