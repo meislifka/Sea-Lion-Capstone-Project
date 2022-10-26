@@ -1,9 +1,10 @@
 from re import template
-from tkinter.tix import INTEGER, TEXT
+# from tkinter.tix import INTEGER, TEXT
 from flask import Flask, render_template, redirect, url_for, request
 import sqlite3
 app = Flask(__name__)
-con = sqlite3.connect("sealions.db")
+# check_same_thread=False ensures db commands run anywhere in file
+con = sqlite3.connect("sealions.db", check_same_thread=False)
 db = con.cursor()
 # db.execute("CREATE TABLE sealions(sealionID, sex, encounter)")
 # db.execute("CREATE TABLE encounters(encounter, sealionID, year, month, day, timeofday, location)")
@@ -31,8 +32,7 @@ db = con.cursor()
 #    PRIMARY KEY(id),
 #    FOREGIN KEY(sealion_id) REFERENCES sealion(id)
 #);
-info = db.execute("SELECT name FROM sealions")
-info = info.fetchall()
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -54,8 +54,16 @@ def login():
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
     if request.method == 'POST':
+        # Gather info from user
         name = request.form.get('name')
-        return render_template('encounterpost.html', name=name)
+        age = request.form.get('age')
+        # add data into database
+        db.execute("INSERT INTO sealions(name, age) VALUES(?,?)",(request.form.get('name'), request.form.get('age')))
+        # commits insert into database
+        con.commit()
+        info = db.execute("SELECT name FROM sealions")
+        info = info.fetchall()
+        return render_template('encounterpost.html', name=name, age=age, info=info)
     else:
         return render_template('encounter.html')
 
