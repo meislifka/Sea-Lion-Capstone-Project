@@ -41,19 +41,24 @@ def home():
 def about():
     return render_template('about.html')
 
-# Route for handling the login page logic
-@app.route('/login', methods=['GET', 'POST'])
-def login():
+# Route for handling the register page logic
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    return render_template('register.html')
+
+@app.route('/encounter', methods=['GET', 'POST'])
+def encounter():
+    # First login, if verified redirect to submit an encounter
     error = None
     if request.method == 'POST':
         if request.form['username'] != 'admin' or request.form['password'] != 'admin':
             error = 'Invalid Credentials. Please try again.'
         else:
-            return redirect(url_for('home'))
+            return redirect(url_for('encountersubmit'))
     return render_template('login.html', error=error)
 
-@app.route('/encounter', methods=['GET','POST'])
-def encounter():
+@app.route('/encountersubmit', methods=['GET','POST'])
+def encountersubmit():
     if request.method == 'POST':
         # Gather info from user
         name = request.form.get('name')
