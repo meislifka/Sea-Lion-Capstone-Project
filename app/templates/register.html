@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block content %}
+  <head>
+    <title>Flask Intro - login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1> Request Access to Sea Lion Encounters </h1>
+      <p> In order to submit and view encounters with Galapagos Sea Lions, please fill out the following form. If approved, 
+        your SeeLion login credentials will be emailed to you.
+      </p>
+      <br>
+      <form action="" method="post">
+        <input type="text" placeholder="First Name" name="fname" value="{{
+          request.form.fname }}" required>
+         <input type="text" placeholder="Last Name" name="lname" value="{{
+          request.form.lname }}" required>
+          <br><br>
+          <input type="text" placeholder="Email Address" name="email" value="{{ 
+          request.form.email }}" required>
+          <input type="text" placeholder="Phone Number" name="phonenum" value="{{ 
+            request.form.phonenum }}" required>
+          <br><br>
+          <input type="text" placeholder="Current Occupation" name="occupation" value="{{ 
+            request.form.occupation }}" required>
+          <br><br>
+          <p> Please provide the relevance of this project to your current occupation and/or your
+            reasoning for requesting access to the SeeLion database:
+          </p>
+          <input type="text" placeholder="" name="explanation" value="{{ 
+            request.form.explanation }}" required>
+          <br><br>
+        <input class="btn btn-default" type="submit" value="Submit">
+      </form>
+      {% if error %}
+        <p class="error"><strong>Error:</strong> {{ error }}
+      {% endif %}
+    </div>
+  </body>
+{% endblock %}
