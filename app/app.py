@@ -1,39 +1,20 @@
+import os
 from re import template
 # from tkinter.tix import INTEGER, TEXT
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
 import sqlite3
+from werkzeug.utils import secure_filename
+
+UPLOAD_FOLDER = 'static\images'
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # check_same_thread=False ensures db commands run anywhere in file
 con = sqlite3.connect("sealions.db", check_same_thread=False)
 db = con.cursor()
-# db.execute("CREATE TABLE sealions(sealionID, sex, encounter)")
-# db.execute("CREATE TABLE encounters(encounter, sealionID, year, month, day, timeofday, location)")
-# db.execute("INSERT INTO sealions(name, age) VALUES('John', '21')")
 # con.commit()
-# CREATE TABLE sealion
-#(
-#    id INTEGER,
-#    sex TEXT,
-#    encounter TEXT,
-#    encounter_id INTEGER,
-#    PRIMARY KEY(id),
-#    FOREGIN KEY(encounter_id) REFERENCES encounters(id)
-#);
-
-# CREATE TABLE encounter
-#(
-#    id INTEGER,
-#    user TEXT,
-#    sealion_id INTEGER,
-#    year INTEGER,
-#    month INTEGER,
-#    day INTEGER,
-#    timeofday INTEGER,
-#    location TEXT,
-#    PRIMARY KEY(id),
-#    FOREGIN KEY(sealion_id) REFERENCES sealion(id)
-#);
-
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -73,6 +54,28 @@ def encountersubmit():
     else:
         return render_template('encounter.html')
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+@app.route('/image', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return render_template('image.html')
+    else:
+        return render_template('image.html')
 if __name__ == '__main__':
     app.run(debug=True)
