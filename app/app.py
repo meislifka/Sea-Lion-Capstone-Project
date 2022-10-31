@@ -9,6 +9,13 @@ UPLOAD_FOLDER = 'static\images'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
+def register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password):
+    conn = sqlite3.connect('database.db')
+    cur = conn.cursor()
+    cur.execute('INSERT INTO users(fName, lName, phoneNumber, occupation, email, username, password) values (?,?,?,?,?,?,?)', (fName, lName, phoneNumber, occupation, email, username, password))
+    conn.commit()
+    conn.close()
+    
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # check_same_thread=False ensures db commands run anywhere in file
@@ -23,9 +30,23 @@ def about():
     return render_template('about.html')
 
 # Route for handling the register page logic
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=["POST", "GET"])
 def register():
-    return render_template('register.html')
+    if request.method == 'POST':
+        fName = request.form['fname']
+        lName = request.form['lname']
+        phoneNumber = request.form['phoneNumber']
+        occupation = request.form['occupation']
+        email = request.form['email']
+        username = request.form['username']
+        password = request.form['password']
+        
+
+        register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password)
+        return redirect(url_for('home'))
+
+    else:
+        return render_template('register.html')
 
 @app.route('/encounter', methods=['GET', 'POST'])
 def encounter():
