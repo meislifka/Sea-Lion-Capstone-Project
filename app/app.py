@@ -4,13 +4,18 @@ from re import template
 from flask import Flask, render_template, redirect, url_for, request, flash
 import sqlite3
 from werkzeug.utils import secure_filename
+import os.path
+
+# Set path of app.py to use for database connections
+BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 
 UPLOAD_FOLDER = 'static\images'
 
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password):
-    conn = sqlite3.connect('database.db')
+    db_path = os.path.join(BASE_DIR, "database.db")
+    conn = sqlite3.connect(db_path)
     cur = conn.cursor()
     cur.execute('INSERT INTO users(fName, lName, phoneNumber, occupation, email, username, password) values (?,?,?,?,?,?,?)', (fName, lName, phoneNumber, occupation, email, username, password))
     conn.commit()
@@ -52,11 +57,19 @@ def register():
 def encounter():
     # First login, if verified redirect to submit an encounter
     error = None
-    if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+    if request.method == 'POST':     
+        username = request.form['username']
+        password = request.form['password']
+        db_path = os.path.join(BASE_DIR, "database.db")
+        conn = sqlite3.connect(db_path)
+        cur = conn.cursor() 
+        cur.execute('SELECT rowid FROM users WHERE username=? AND password=?', (username, password))
+        entry = cur.fetchall()
+        if len(entry) == 0:
             error = 'Invalid Credentials. Please try again.'
         else:
             return redirect(url_for('encountersubmit'))
+        conn.close()
     return render_template('login.html', error=error)
 
 @app.route('/encountersubmit', methods=['GET','POST'])
