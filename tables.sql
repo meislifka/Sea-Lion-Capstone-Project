@@ -8,7 +8,7 @@ CREATE TABLE sealion
     encounter TEXT,
     encounter_id INTEGER,
     PRIMARY KEY(id),
-    FOREGIN KEY(encounter_id) REFERENCES encounters(id)
+    FOREIGN KEY(encounter_id) REFERENCES encounters(id)
 );
 
  CREATE TABLE encounter
@@ -21,7 +21,14 @@ CREATE TABLE sealion
     day INTEGER,
     timeofday INTEGER,
     location TEXT,
+<<<<<<< Updated upstream
     PRIMARY KEY(id)
 );
 
     FOREGIN KEY(sealion_id) REFERENCES sealion(id)
+=======
+    PRIMARY KEY (id)
+);
+
+    FOREIGN KEY(sealion_id) REFERENCES sealion(id)
+>>>>>>> Stashed changes

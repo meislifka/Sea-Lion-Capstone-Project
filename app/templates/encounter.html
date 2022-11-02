@@ -3,11 +3,17 @@
   <div class="home">
         <h1>Submit Encounters</h1>
   </div>
-  <form action="/encounter" method="post">
+  <form action="/encountersubmit" method="post">
     <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="ID" name="ID" placeholder="ID" type="text">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="age" name="age" placeholder="age" type="text">    
-    </div>
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="name" name="name" placeholder="name" type="number">
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="user" name="user" placeholder="user" type="text">    
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="sealion_id" name="sealion_id" placeholder="sealion_id" type="number">    
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="year" name="year" placeholder="year" type="number">    
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="month" name="month" placeholder="month" type="number">    
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="day" name="day" placeholder="day" type="number">    
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="timeofday" name="timeofday" placeholder="timeofday" type="number">    
+        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="location" name="location" placeholder="location" type="text">        
+      </div>
     <button class="btn btn-primary" type="submit">Submit Encounter</button>
 </form>
 {% endblock %}

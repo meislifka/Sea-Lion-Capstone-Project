@@ -1,3 +1,4 @@
+from calendar import month
 import os
 from re import template
 # from tkinter.tix import INTEGER, TEXT
@@ -77,14 +78,21 @@ def encountersubmit():
     if request.method == 'POST':
         # Gather info from user
         name = request.form.get('name')
-        age = request.form.get('age')
+        user = request.form.get('user')
+        sealion_id = request.form.get('sealion_id')
+        year = request.form.get('year')
+        month = request.form.get('month')
+        day = request.form.get('day')
+        timeofday = request.form.get('timeofday')
+        location = request.form.get('location')
         # add data into database
-        db.execute("INSERT INTO sealions(name, age) VALUES(?,?)",(request.form.get('name'), request.form.get('age')))
+        db_path = os.path.join(BASE_DIR, "sealions.db")
+        con = sqlite3.connect(db_path)
+        db = con.cursor()
+        db.execute("INSERT INTO encounter (id, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(request.form.get('name'), request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
         # commits insert into database
         con.commit()
-        info = db.execute("SELECT name FROM sealions")
-        info = info.fetchall()
-        return render_template('encounterpost.html', name=name, age=age, info=info)
+        return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
     else:
         return render_template('encounter.html')
 
