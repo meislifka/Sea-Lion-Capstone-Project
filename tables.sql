@@ -21,6 +21,7 @@ CREATE TABLE sealion
     day INTEGER,
     timeofday INTEGER,
     location TEXT,
-    PRIMARY KEY(id),
-    FOREGIN KEY(sealion_id) REFERENCES sealion(id)
+    PRIMARY KEY(id)
 );
+
+    FOREGIN KEY(sealion_id) REFERENCES sealion(id)
