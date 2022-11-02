@@ -2,10 +2,17 @@ from calendar import month
 import os
 from re import template
 # from tkinter.tix import INTEGER, TEXT
-from flask import Flask, render_template, redirect, url_for, request, flash
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 import sqlite3
+from flask_session import Session
 from werkzeug.utils import secure_filename
 import os.path
+
+app = Flask(__name__)
+app.config["SESSION_PERMANENT"] = False
+app.config["SECRET_KEY"] = 'super secret key'
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 # Set path of app.py to use for database connections
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
@@ -28,6 +35,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 con = sqlite3.connect("sealions.db", check_same_thread=False)
 db = con.cursor()
 # con.commit()
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -47,16 +55,14 @@ def register():
         username = request.form['username']
         password = request.form['password']
         
-
         register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password)
         return redirect(url_for('home'))
 
     else:
         return render_template('register.html')
 
-@app.route('/encounter', methods=['GET', 'POST'])
-def encounter():
-    # First login, if verified redirect to submit an encounter
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     error = None
     if request.method == 'POST':     
         username = request.form['username']
@@ -69,30 +75,24 @@ def encounter():
         if len(entry) == 0:
             error = 'Invalid Credentials. Please try again.'
         else:
-            return redirect(url_for('encountersubmit'))
+            session["username"] = request.form.get("username")
+            return redirect(url_for('home'))
         conn.close()
     return render_template('login.html', error=error)
 
-@app.route('/encountersubmit', methods=['GET','POST'])
-def encountersubmit():
+@app.route('/encounter', methods=['GET','POST'])
+def encounter():
     if request.method == 'POST':
         # Gather info from user
         name = request.form.get('name')
-        user = request.form.get('user')
-        sealion_id = request.form.get('sealion_id')
-        year = request.form.get('year')
-        month = request.form.get('month')
-        day = request.form.get('day')
-        timeofday = request.form.get('timeofday')
-        location = request.form.get('location')
+        age = request.form.get('age')
         # add data into database
-        db_path = os.path.join(BASE_DIR, "sealions.db")
-        con = sqlite3.connect(db_path)
-        db = con.cursor()
-        db.execute("INSERT INTO encounter (id, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(request.form.get('name'), request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
+        db.execute("INSERT INTO sealions(name, age) VALUES(?,?)",(request.form.get('name'), request.form.get('age')))
         # commits insert into database
         con.commit()
-        return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
+        info = db.execute("SELECT name FROM sealions")
+        info = info.fetchall()
+        return render_template('encounterpost.html', name=name, age=age, info=info)
     else:
         return render_template('encounter.html')
 
@@ -119,5 +119,11 @@ def upload_file():
         return render_template('image.html')
     else:
         return render_template('image.html')
+
+@app.route('/logout', methods=['GET','POST'])
+def logout():
+    session["username"] = None
+    return redirect(url_for('home'))
+
 if __name__ == '__main__':
     app.run(debug=True)
