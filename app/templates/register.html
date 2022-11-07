@@ -44,6 +44,9 @@
 <br>
 <button type="submit" class="btn btn-primary">Register</button>
 </form>
+{% if message %}
+<p class="message"> <strong>{{ message }}</strong>
+{% endif %}
 </div>
 </body>
 {% endblock %}
