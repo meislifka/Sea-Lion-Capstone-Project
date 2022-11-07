@@ -5,15 +5,43 @@
   </div>
   <form action="/encounter" method="post">
     <div class="mb-3">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="name" name="name" placeholder="name" type="number">
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="user" name="user" placeholder="user" type="text">    
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="sealion_id" name="sealion_id" placeholder="sealion_id" type="number">    
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="year" name="year" placeholder="year" type="number">    
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="month" name="month" placeholder="month" type="number">    
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="day" name="day" placeholder="day" type="number">    
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="timeofday" name="timeofday" placeholder="timeofday" type="number">    
-        <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="location" name="location" placeholder="location" type="text">        
+      <label for="user" class="form-label">User: </label>
+      <input type="text" class="form-control" id="user" name="user">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="sealion_id" class="form-label">SeaLion_ID: </label>
+      <input type="text" class="form-control" id="sealion_id" name="sealion_id">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="year" class="form-label">Year: </label>
+      <input type="number" class="form-control" id="year" name="year">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="month" class="form-label">Month: </label>
+      <input type="number" class="form-control" id="month" name="month">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="day" class="form-label">Day: </label>
+      <input type="number" class="form-control" id="day" name="day">
+    </div>
+    <br>
+    <div class="mb-3">
       </div>
+      <div class="mb-3">
+        <label for="timeofday" class="form-label">Time Of Day: </label>
+        <input type="number" class="form-control" id="timeofday" name="timeofday" >
+      </div>
+      <br>
+      <div class="mb-3">
+        <label for="location" class="form-label">Location: </label>
+        <input type="text" class="form-control" id="location" name="location">
+      </div>
+      <br>
     <button class="btn btn-primary" type="submit">Submit Encounter</button>
 </form>
+<p> {{error}} </p>
 {% endblock %}

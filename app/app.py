@@ -115,19 +115,27 @@ def login():
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
     if request.method == 'POST':
-        # Gather info from user
-        name = request.form.get('name')
-        user = request.form.get('user')
-        sealion_id = request.form.get('sealion_id')
-        year = request.form.get('year')
-        month = request.form.get('month')
-        day = request.form.get('day')
-        timeofday = request.form.get('timeofday')
-        location = request.form.get('location')
-        # add data into database
         db_path = os.path.join(BASE_DIR, "sealions.db")
         con = sqlite3.connect(db_path)
         db = con.cursor()
+        # Gather info from user
+        db.execute("select max(ID) from encounter")
+        previous = db.fetchone()
+        name = previous[0] + 1
+        user = request.form.get('user')
+        sealion_id = request.form.get('sealion_id')
+        year = request.form.get('year')
+        if int(year) > 2022:
+            return render_template('encounter.html', error="year cant be in the future")
+        month = request.form.get('month')
+        if int(month) > 12:
+            return render_template('encounter.html', error="month can't be greater than 12")
+        day = request.form.get('day')
+        if int(day) > 31:
+            return render_template('encounter.html', error="day can't be greater than 31")
+        timeofday = request.form.get('timeofday')
+        location = request.form.get('location')
+        # add data into database
         db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(request.form.get('name'), request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
         # commits insert into database
         con.commit()
