@@ -21,8 +21,8 @@
         <br>
         <input class="btn btn-default" type="submit" value="Login">
       </form>
-      {% if error %}
-        <p class="error"><strong>Error:</strong> {{ error }}
+      {% if message %}
+        <p class="message"> <strong>{{ message }}</strong>
       {% endif %}
     </div>
   </body>

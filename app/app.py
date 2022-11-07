@@ -49,7 +49,7 @@ def about():
 # Route for handling the register page logic
 @app.route('/register', methods=["POST", "GET"])
 def register():
-    error = None
+    message = None
     if request.method == 'POST':
         fName = request.form['fname']
         lName = request.form['lname']
@@ -68,20 +68,19 @@ def register():
         #IT CORRECTLY IDENTFIES IF A USERNAME IS ALREADY IN THE TABLE AND DOESNT ADD IT BUT THE ERROR MESSAGE WONT THROW --HELP
         print("LENGTH: " +str(len(entry)))
         if len(entry) == 0:
-            print("MADE IT HERE")
+            message = "Registration Successful!"
             hashedpassword = generate_password_hash(password)
             register_user_to_db(fName, lName, phoneNumber, occupation, email, username, hashedpassword)  
-            conn.close()  
-            return redirect(url_for('home'))
+            conn.close()
+            #return redirect(url_for('home'))
         else:
-            print("ACUTALLY HERE")
-            error = 'Invalid Credentials. Please try again.' 
+            message = 'ERROR: Username taken. Please try again.' 
         conn.close()
-    return render_template('register.html', error=error)
+    return render_template('register.html', message=message)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    error = None
+    message = None
     if request.method == 'POST':     
         username = request.form['username']
         password = request.form['password']
@@ -108,9 +107,9 @@ def login():
                 session["username"] = request.form.get("username")
                 return redirect(url_for('home'))
             else:
-                error = 'Invalid Credentials. Please try again.'
+                message = "ERROR: Invalid Credentials. Please try again."
         conn.close()
-    return render_template('login.html', error=error)
+    return render_template('login.html', message=message)
 
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
