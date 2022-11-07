@@ -49,7 +49,7 @@ def about():
 # Route for handling the register page logic
 @app.route('/register', methods=["POST", "GET"])
 def register():
-    message = None
+    error = None
     if request.method == 'POST':
         fName = request.form['fname']
         lName = request.form['lname']
@@ -68,19 +68,20 @@ def register():
         #IT CORRECTLY IDENTFIES IF A USERNAME IS ALREADY IN THE TABLE AND DOESNT ADD IT BUT THE ERROR MESSAGE WONT THROW --HELP
         print("LENGTH: " +str(len(entry)))
         if len(entry) == 0:
-            message = "Registration Successful!"
+            print("MADE IT HERE")
             hashedpassword = generate_password_hash(password)
             register_user_to_db(fName, lName, phoneNumber, occupation, email, username, hashedpassword)  
-            conn.close()
-            #return redirect(url_for('home'))
+            conn.close()  
+            return redirect(url_for('home'))
         else:
-            message = 'ERROR: Username taken. Please try again.' 
+            print("ACUTALLY HERE")
+            error = 'Invalid Credentials. Please try again.' 
         conn.close()
-    return render_template('register.html', message=message)
+    return render_template('register.html', error=error)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    message = None
+    error = None
     if request.method == 'POST':     
         username = request.form['username']
         password = request.form['password']
@@ -107,34 +108,26 @@ def login():
                 session["username"] = request.form.get("username")
                 return redirect(url_for('home'))
             else:
-                message = "ERROR: Invalid Credentials. Please try again."
+                error = 'Invalid Credentials. Please try again.'
         conn.close()
-    return render_template('login.html', message=message)
+    return render_template('login.html', error=error)
 
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
     if request.method == 'POST':
-        db_path = os.path.join(BASE_DIR, "sealions.db")
-        con = sqlite3.connect(db_path)
-        db = con.cursor()
         # Gather info from user
-        db.execute("select max(ID) from encounter")
-        previous = db.fetchone()
-        name = previous[0] + 1
+        name = request.form.get('name')
         user = request.form.get('user')
         sealion_id = request.form.get('sealion_id')
         year = request.form.get('year')
-        if int(year) > 2022:
-            return render_template('encounter.html', error="year cant be in the future")
         month = request.form.get('month')
-        if int(month) > 12:
-            return render_template('encounter.html', error="month can't be greater than 12")
         day = request.form.get('day')
-        if int(day) > 31:
-            return render_template('encounter.html', error="day can't be greater than 31")
         timeofday = request.form.get('timeofday')
         location = request.form.get('location')
         # add data into database
+        db_path = os.path.join(BASE_DIR, "sealions.db")
+        con = sqlite3.connect(db_path)
+        db = con.cursor()
         db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(request.form.get('name'), request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
         # commits insert into database
         con.commit()
@@ -145,7 +138,21 @@ def encounter():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+# Route for handling the search page logic
+@app.route('/search', methods=["POST", "GET"])
+def search():
+    message = None
+    if request.method == 'POST':
+        location = request.form['location']
+        db_path = os.path.join(BASE_DIR, "sealions.db")
+        conn = sqlite3.connect(db_path)
+        cur = conn.cursor() 
+        #cur.execute('SELECT rowid FROM users WHERE username=? AND password=?', (username, password))
+        cur.execute('SELECT * FROM users WHERE location=?', [location])
+        entry = cur.fetchall()
 
+        
+    return render_template('register.html', message=message)
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
