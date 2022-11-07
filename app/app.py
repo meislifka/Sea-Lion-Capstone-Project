@@ -49,7 +49,7 @@ def about():
 # Route for handling the register page logic
 @app.route('/register', methods=["POST", "GET"])
 def register():
-    error = None
+    message = None
     if request.method == 'POST':
         fName = request.form['fname']
         lName = request.form['lname']
@@ -61,56 +61,41 @@ def register():
         db_path = os.path.join(BASE_DIR, "database.db")
         conn = sqlite3.connect(db_path)
         cur = conn.cursor() 
-        #cur.execute('SELECT rowid FROM users WHERE username=? AND password=?', (username, password))
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
 
         #IT CORRECTLY IDENTFIES IF A USERNAME IS ALREADY IN THE TABLE AND DOESNT ADD IT BUT THE ERROR MESSAGE WONT THROW --HELP
-        print("LENGTH: " +str(len(entry)))
         if len(entry) == 0:
-            print("MADE IT HERE")
+            message = "Registration Successful!"
             hashedpassword = generate_password_hash(password)
             register_user_to_db(fName, lName, phoneNumber, occupation, email, username, hashedpassword)  
             conn.close()  
             return redirect(url_for('home'))
         else:
-            print("ACUTALLY HERE")
-            error = 'Invalid Credentials. Please try again.' 
+            message = "ERROR: Username taken. Please try again."
         conn.close()
-    return render_template('register.html', error=error)
+    return render_template('register.html', message=message)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    error = None
+    message = None
     if request.method == 'POST':     
         username = request.form['username']
         password = request.form['password']
         db_path = os.path.join(BASE_DIR, "database.db")
         conn = sqlite3.connect(db_path)
         cur = conn.cursor() 
-        #cur.execute('SELECT rowid FROM users WHERE username=? AND password=?', (username, password))
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
-        """
-        if len(entry) == 0:
-            error = 'Invalid Credentials. Please try again.'
-        else:
-            session["username"] = request.form.get("username")
-            return redirect(url_for('home'))
-        conn.close()
-
-        """
         for i in entry:
-            #print(i)
-            print(i[6])
             if(check_password_hash(str(i[6]),password)):
-                print("correct!")
+                message = "Login Successful!"
                 session["username"] = request.form.get("username")
                 return redirect(url_for('home'))
             else:
-                error = 'Invalid Credentials. Please try again.'
+                message = 'ERROR: Invalid Credentials. Please try again.'
         conn.close()
-    return render_template('login.html', error=error)
+    return render_template('login.html', message=message)
 
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
@@ -175,8 +160,12 @@ def upload_file():
 
 @app.route('/logout', methods=['GET','POST'])
 def logout():
-    session["username"] = None
-    return redirect(url_for('home'))
+    message = None
+    if request.form.get('LogoutButton') == 'Logout':
+        message = "Logout Successful!"
+    #session["username"] = None
+    #return redirect(url_for('home'))
+    return render_template('logout.html', message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)
