@@ -87,13 +87,12 @@ def login():
         cur = conn.cursor() 
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
-        for i in entry:
-            if(check_password_hash(str(i[6]),password)):
-                message = "Login Successful!"
-                session["username"] = request.form.get("username")
-                return redirect(url_for('home'))
-            else:
-                message = 'ERROR: Invalid Credentials. Please try again.'
+        if(check_password_hash(entry[0][6],password)):
+            message = "Login Successful!"
+            session["username"] = request.form.get("username")
+            return redirect(url_for('home'))
+        else:
+            message = 'ERROR: Invalid Credentials. Please try again.'
         conn.close()
     return render_template('login.html', message=message)
 
