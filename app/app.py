@@ -123,6 +123,7 @@ def encounter():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 # Route for handling the search page logic
 @app.route('/search', methods=["POST", "GET"])
 def search():
@@ -132,12 +133,10 @@ def search():
         db_path = os.path.join(BASE_DIR, "sealions.db")
         conn = sqlite3.connect(db_path)
         cur = conn.cursor() 
-        #cur.execute('SELECT rowid FROM users WHERE username=? AND password=?', (username, password))
-        cur.execute('SELECT * FROM users WHERE location=?', [location])
-        entry = cur.fetchall()
+        cur.execute('SELECT * FROM encounters WHERE location=?', [location])
+        entry = cur.fetchall()        
+    return render_template('search.html', message=message)
 
-        
-    return render_template('register.html', message=message)
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':

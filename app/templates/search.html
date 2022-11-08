@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+{% block content %}
+  <head>
+    <title>Search Database</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Enter what you would like to search for</h1>
+      <form action="" method="post">
+        <div class="mb-3">
+          <label for="sealion_id" class="form-label">Sealion ID: </label>
+          <input type="text" class="form-control" id="sealion_id" name="sealion_id">
+        </div>
+         <br>
+        <div class="mb-3">
+         <label for="month" class="month">Month: </label>
+         <input type="text" class="form-control" id="month" name="month">
+        </div>
+        <br>
+        <div class="mb-3">
+          <label for="year" class="form-label">Year: </label>
+          <input type="text" class="form-control" id="year" name="year">
+        </div>
+         
+         <br>
+        <div class="mb-3">
+          <label for="location" class="form-label">Location: </label>
+          <input type="text" class="form-control" id="location" name="location">
+          <br>
+          <input class="btn btn-default" type="submit" value="Submit">
+          {% if usr | length != 0 %}
+          <table id="sesalions">
+            {% for u in usr %}
+            <tr>
+                <td>{{ u[0] }}</td>
+                <td>{{ u[1] }}</td>
+                <td>{{ u[2] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <div id="demo">No search results.</div>
+        {% endif %}
+        </div>
+    </div>
+  </body>
+{% endblock %}
