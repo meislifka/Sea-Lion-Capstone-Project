@@ -128,12 +128,42 @@ def allowed_file(filename):
 def search():
     message = None
     if request.method == 'POST':
-        location = request.form['location']
+        
         db_path = os.path.join(BASE_DIR, "sealions.db")
         conn = sqlite3.connect(db_path)
         cur = conn.cursor() 
-        cur.execute('SELECT * FROM encounters WHERE location=?', [location])
-        entry = cur.fetchall()        
+        loc = request.form['location']
+        sID = request.form['sealion_id']
+        mon = request.form['month']
+        ye = request.form['year']
+        print("l "+loc)
+        print("s "+sID)
+        print("m "+mon)
+        print("y "+ye)
+        if(loc !=""):
+            cur.execute('SELECT * FROM encounter WHERE location=?', [loc])
+            print("here")
+            entry = cur.fetchall()  
+            print("id    "+ "user    "+"sealion_id    ")  
+            print("-----------------------------")   
+            for i in entry:
+                print(str(i[0]) +"     "+  str(i[1])+"       "+ str(i[2])+" ")  
+        elif(sID != ""):
+            cur.execute('SELECT * FROM encounter WHERE sealion_id=?', [sID])
+            entry = cur.fetchall()  
+            print("id    "+ "user    "+"sealion_id    ")  
+            print("-----------------------------")   
+            for i in entry:
+                print(str(i[0]) +"     "+  str(i[1])+"       "+ str(i[2])+" ")  
+        elif(mon != ""):
+            cur.execute('SELECT * FROM encounter WHERE month=?', [mon])
+            print("here3")
+        elif(ye != ""):
+            cur.execute('SELECT * FROM encounter WHERE year=?', [ye])
+            print("here4")
+
+
+
     return render_template('search.html', message=message)
 
 @app.route('/image', methods=['GET', 'POST'])
