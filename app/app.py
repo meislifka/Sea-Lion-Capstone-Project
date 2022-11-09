@@ -30,7 +30,6 @@ def register_user_to_db(fName, lName, phoneNumber, occupation, email, username, 
     conn.commit()
     conn.close()
     
-app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # check_same_thread=False ensures db commands run anywhere in file
 con = sqlite3.connect("sealions.db", check_same_thread=False)
@@ -79,7 +78,8 @@ def register():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     message = None
-    if request.method == 'POST':     
+    if request.method == 'POST':  
+        session.clear()   
         username = request.form['username']
         password = request.form['password']
         db_path = os.path.join(BASE_DIR, "database.db")
@@ -90,6 +90,7 @@ def login():
         if(check_password_hash(entry[0][6],password)):
             message = "Login Successful!"
             session["username"] = request.form.get("username")
+            print(session.get("username"))
             return redirect(url_for('home'))
         else:
             message = 'ERROR: Invalid Credentials. Please try again.'
@@ -99,40 +100,43 @@ def login():
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
     if request.method == 'POST':
-        # Connect to database
-        db_path = os.path.join(BASE_DIR, "sealions.db")
-        con = sqlite3.connect(db_path)
-        db = con.cursor()
-        temp1 = db.execute("SELECT max(ID) from encounter")
-        temp2 = db.fetchone()
-        name = int(temp2[0]) + 1
-        # Gather info from user
-        user = request.form.get('user')
-        if request.form.get('user') == "":
-            return render_template('encounter.html', error="Must input user")
-        sealion_id = request.form.get('sealion_id')
-        if request.form.get('sealion_id') == "":
-            return render_template('encounter.html', error="Must input sealion_id")
-        year = request.form.get('year')
-        if request.form.get('year') == "":
-            return render_template('encounter.html', error="Must input year")
-        month = request.form.get('month')
-        if request.form.get('month') == "":
-            return render_template('encounter.html', error="Must input month")
-        day = request.form.get('day')
-        if request.form.get('day') == "":
-            return render_template('encounter.html', error="Must input day")
-        timeofday = request.form.get('timeofday')
-        if request.form.get('timeofday') == "":
-            return render_template('encounter.html', error="Must input timeofday")
-        location = request.form.get('location')
-        if request.form.get('location') == "":
-            return render_template('encounter.html', error="Must input location")
-        # add data into database
-        db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
-        # commits insert into database
-        con.commit()
-        return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
+        if not session.get("username"):
+            return redirect(url_for('login'))
+        else:
+            # Connect to database
+            db_path = os.path.join(BASE_DIR, "sealions.db")
+            con = sqlite3.connect(db_path)
+            db = con.cursor()
+            temp1 = db.execute("SELECT max(ID) from encounter")
+            temp2 = db.fetchone()
+            name = int(temp2[0]) + 1
+            # Gather info from user
+            user = request.form.get('user')
+            if request.form.get('user') == "":
+                return render_template('encounter.html', error="Must input user")
+            sealion_id = request.form.get('sealion_id')
+            if request.form.get('sealion_id') == "":
+                return render_template('encounter.html', error="Must input sealion_id")
+            year = request.form.get('year')
+            if request.form.get('year') == "":
+                return render_template('encounter.html', error="Must input year")
+            month = request.form.get('month')
+            if request.form.get('month') == "":
+                return render_template('encounter.html', error="Must input month")
+            day = request.form.get('day')
+            if request.form.get('day') == "":
+                return render_template('encounter.html', error="Must input day")
+            timeofday = request.form.get('timeofday')
+            if request.form.get('timeofday') == "":
+                return render_template('encounter.html', error="Must input timeofday")
+            location = request.form.get('location')
+            if request.form.get('location') == "":
+                return render_template('encounter.html', error="Must input location")
+            # add data into database
+            db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
+            # commits insert into database
+            con.commit()
+            return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
     else:
         return render_template('encounter.html')
 
@@ -208,9 +212,11 @@ def logout():
     message = None
     if request.form.get('LogoutButton') == 'Logout':
         message = "Logout Successful!"
-    #session["username"] = None
-    #return redirect(url_for('home'))
-    return render_template('logout.html', message=message)
+        #session["username"] = None
+        session.clear()
+        return redirect(url_for('home'))
+    else:
+        return render_template('logout.html', message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)
