@@ -116,18 +116,12 @@ def encounter():
         year = request.form.get('year')
         if request.form.get('year') == "":
             return render_template('encounter.html', error="Must input year")
-        if int(request.form.get('year')) > 2022 or int(request.form.get('year')) < 2000:
-            return render_template('encounter.html', error="Must input valid year")
         month = request.form.get('month')
         if request.form.get('month') == "":
             return render_template('encounter.html', error="Must input month")
-        if int(request.form.get('month')) > 12  or int(request.form.get('month')) < 0:
-            return render_template('encounter.html', error="Must input valid month")
         day = request.form.get('day')
         if request.form.get('day') == "":
             return render_template('encounter.html', error="Must input day")
-        if int(request.form.get('day')) > 31  or int(request.form.get('day')) < 0:
-            return render_template('encounter.html', error="Must input valid day")
         timeofday = request.form.get('timeofday')
         if request.form.get('timeofday') == "":
             return render_template('encounter.html', error="Must input timeofday")
