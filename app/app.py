@@ -100,9 +100,7 @@ def login():
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
     if request.method == 'POST':
-        if not session.get("username"):
-            return redirect(url_for('login'))
-        else:
+            print("session set " + session.get("username"))
             # Connect to database
             db_path = os.path.join(BASE_DIR, "sealions.db")
             con = sqlite3.connect(db_path)
@@ -138,6 +136,9 @@ def encounter():
             con.commit()
             return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
     else:
+        if session.get("username")==None:
+            print(session.get("username"))
+            return redirect(url_for('login'))
         return render_template('encounter.html')
 
 def allowed_file(filename):
@@ -214,6 +215,7 @@ def logout():
         message = "Logout Successful!"
         #session["username"] = None
         session.clear()
+        print(session.get("username"))
         return redirect(url_for('home'))
     else:
         return render_template('logout.html', message=message)
