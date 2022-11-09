@@ -1,0 +1,18 @@
+
+{% extends "layout.html" %}
+{% block content %}
+
+
+  <div class="home">
+        <h1>Submit Encounters</h1>
+        <p>Encounter Number {{entry}} Recorded
+          {% for u in entry %}
+          <tr>
+            <td>{{ u[0] }}</td>
+            <td>{{ u[1] }}</td>
+            <td>{{ u[2] }}</td>
+          </tr>
+          {% endfor %}
+
+  </div>
+{% endblock %}

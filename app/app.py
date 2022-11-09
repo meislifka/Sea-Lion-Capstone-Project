@@ -164,9 +164,11 @@ def search():
             print("here")
             entry = cur.fetchall()  
             print("id    "+ "user    "+"sealion_id    ")  
-            print("-----------------------------")   
+            print("-----------------------------") 
+            return render_template('searchPost.html')  
             for i in entry:
                 print(str(i[0]) +"     "+  str(i[1])+"       "+ str(i[2])+" ")  
+            return(entry)
         elif(sID != ""):
             cur.execute('SELECT * FROM encounter WHERE sealion_id=?', [sID])
             entry = cur.fetchall()  

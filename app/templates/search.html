@@ -1,3 +1,4 @@
+<!-- https://code-boxx.com/search-results-python-flask/-->
 {% extends "layout.html" %}
 {% block content %}
   <head>
@@ -30,20 +31,23 @@
           <input type="text" class="form-control" id="location" name="location">
           <br>
           <input class="btn btn-default" type="submit" value="Submit">
-          {% if usr | length != 0 %}
-          <table id="sesalions">
-            {% for u in usr %}
-            <tr>
-                <td>{{ u[0] }}</td>
-                <td>{{ u[1] }}</td>
-                <td>{{ u[2] }}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        {% else %}
-        <div id="demo">No search results.</div>
-        {% endif %}
+        
         </div>
     </div>
+
+    <!-- (B) OUTPUT SEARCH RESULTS -->
+      {% if usr | length != 0 %}
+      <table id="demo">
+        {% for u in usr %}
+        <tr>
+          <td>{{ u[0] }}</td>
+          <td>{{ u[1] }}</td>
+          <td>{{ u[2] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      
+      {% endif %}
   </body>
 {% endblock %}
