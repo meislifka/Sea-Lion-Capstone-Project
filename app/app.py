@@ -99,20 +99,43 @@ def login():
 @app.route('/encounter', methods=['GET','POST'])
 def encounter():
     if request.method == 'POST':
-        # Gather info from user
-        name = request.form.get('name')
-        user = request.form.get('user')
-        sealion_id = request.form.get('sealion_id')
-        year = request.form.get('year')
-        month = request.form.get('month')
-        day = request.form.get('day')
-        timeofday = request.form.get('timeofday')
-        location = request.form.get('location')
-        # add data into database
+        # Connect to database
         db_path = os.path.join(BASE_DIR, "sealions.db")
         con = sqlite3.connect(db_path)
         db = con.cursor()
-        db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(request.form.get('name'), request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
+        temp1 = db.execute("SELECT max(ID) from encounter")
+        temp2 = db.fetchone()
+        name = int(temp2[0]) + 1
+        # Gather info from user
+        user = request.form.get('user')
+        if request.form.get('user') == "":
+            return render_template('encounter.html', error="Must input user")
+        sealion_id = request.form.get('sealion_id')
+        if request.form.get('sealion_id') == "":
+            return render_template('encounter.html', error="Must input sealion_id")
+        year = request.form.get('year')
+        if request.form.get('year') == "":
+            return render_template('encounter.html', error="Must input year")
+        if int(request.form.get('year')) > 2022 or int(request.form.get('year')) < 2000:
+            return render_template('encounter.html', error="Must input valid year")
+        month = request.form.get('month')
+        if request.form.get('month') == "":
+            return render_template('encounter.html', error="Must input month")
+        if int(request.form.get('month')) > 12  or int(request.form.get('month')) < 0:
+            return render_template('encounter.html', error="Must input valid month")
+        day = request.form.get('day')
+        if request.form.get('day') == "":
+            return render_template('encounter.html', error="Must input day")
+        if int(request.form.get('day')) > 31  or int(request.form.get('day')) < 0:
+            return render_template('encounter.html', error="Must input valid day")
+        timeofday = request.form.get('timeofday')
+        if request.form.get('timeofday') == "":
+            return render_template('encounter.html', error="Must input timeofday")
+        location = request.form.get('location')
+        if request.form.get('location') == "":
+            return render_template('encounter.html', error="Must input location")
+        # add data into database
+        db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
         # commits insert into database
         con.commit()
         return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
