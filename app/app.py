@@ -155,37 +155,30 @@ def search():
         sID = request.form['sealion_id']
         mon = request.form['month']
         ye = request.form['year']
-        print("l "+loc)
-        print("s "+sID)
-        print("m "+mon)
-        print("y "+ye)
+        #print("l "+loc)
+        #print("s "+sID)
+        #print("m "+mon)
+       # print("y "+ye)
         if(loc !=""):
             cur.execute('SELECT * FROM encounter WHERE location=?', [loc])
-            print("here")
             entry = cur.fetchall()  
-            print("id    "+ "user    "+"sealion_id    ")  
-            print("-----------------------------") 
-            return render_template('searchPost.html')  
-            for i in entry:
-                print(str(i[0]) +"     "+  str(i[1])+"       "+ str(i[2])+" ")  
-            return(entry)
+            return render_template('searchPost.html',entry = entry)  
         elif(sID != ""):
             cur.execute('SELECT * FROM encounter WHERE sealion_id=?', [sID])
             entry = cur.fetchall()  
-            print("id    "+ "user    "+"sealion_id    ")  
-            print("-----------------------------")   
-            for i in entry:
-                print(str(i[0]) +"     "+  str(i[1])+"       "+ str(i[2])+" ")  
+            return render_template('searchPost.html',entry = entry) 
+           
         elif(mon != ""):
             cur.execute('SELECT * FROM encounter WHERE month=?', [mon])
-            print("here3")
+            entry = cur.fetchall()
+            return render_template('searchPost.html',entry = entry) 
         elif(ye != ""):
             cur.execute('SELECT * FROM encounter WHERE year=?', [ye])
-            print("here4")
-
-
-
+            entry = cur.fetchall()
+            return render_template('searchPost.html',entry = entry) 
     return render_template('search.html', message=message)
+
+
 
 @app.route('/image', methods=['GET', 'POST'])
 def upload_file():

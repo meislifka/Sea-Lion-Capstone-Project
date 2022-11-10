@@ -98,4 +98,18 @@ body {
     text-align:left;
   }
 
+  table 
+  {
+    border: 1px solid;
+  }
   
+  td 
+  { 
+    font-size: 30px; 
+    border: 1px solid;
+  }
+  th{ 
+    font-size: 30px; 
+    font-weight: bold ;
+    border: 1px solid;
+  }

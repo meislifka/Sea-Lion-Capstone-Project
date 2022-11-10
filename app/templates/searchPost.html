@@ -4,15 +4,34 @@
 
 
   <div class="home">
-        <h1>Submit Encounters</h1>
-        <p>Encounter Number {{entry}} Recorded
+        <h1>Results</h1>
+          <table>
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Sealion ID</th>
+            <th>Year</th>
+            <th>Month</th>
+            <th>Day</th>
+            <th>Time of Day</th>
+            <th>Location</th>       
+            <br>
+          </tr>
           {% for u in entry %}
           <tr>
             <td>{{ u[0] }}</td>
             <td>{{ u[1] }}</td>
             <td>{{ u[2] }}</td>
+            <td>{{ u[3] }}</td>
+            <td>{{ u[4] }}</td>
+            <td>{{ u[5] }}</td>
+            <td>{{ u[6] }}</td>
+            <td>{{ u[7] }}</td>
+            <br>
+            
           </tr>
           {% endfor %}
+        </table>
 
   </div>
 {% endblock %}
