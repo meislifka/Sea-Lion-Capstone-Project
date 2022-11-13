@@ -3,7 +3,7 @@
   <div class="home">
         <h1>Submit Encounters</h1>
   </div>
-  <form action="/encounter" method="post">
+  <form action="/encounter" method="post" enctype=multipart/form-data>
     <div class="mb-3">
       <label for="user" class="form-label">User: </label>
       <input type="text" class="form-control" id="user" name="user">
@@ -95,6 +95,11 @@
     <div class="mb-3">
       <label for="location" class="form-label">Location: </label>
       <input type="text" class="form-control" id="location" name="location">
+    </div>
+    <br>
+    <div class="mb-3">
+      <label for="upload">Add Image: </label>
+      <input type=file name=file>
     </div>
     <br>
     <button class="btn btn-primary" type="submit">Submit Encounter</button>
