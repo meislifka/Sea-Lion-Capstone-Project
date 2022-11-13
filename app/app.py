@@ -8,7 +8,8 @@ from flask_session import Session
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os.path
-
+UPLOAD_FOLDER = 'static\images'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SECRET_KEY"] = 'super secret key'
@@ -18,9 +19,7 @@ Session(app)
 # Set path of app.py to use for database connections
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 
-UPLOAD_FOLDER = 'static\images'
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password):
     db_path = os.path.join(BASE_DIR, "database.db")
