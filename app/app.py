@@ -106,7 +106,7 @@ def encounter():
             temp2 = db.fetchone()
             name = int(temp2[0]) + 1
             # Gather info from user
-            user = request.form.get('user')
+            user = session["username"]
             if request.form.get('user') == "":
                 return render_template('encounter.html', error="Must input user")
             sealion_id = request.form.get('sealion_id')
@@ -142,7 +142,7 @@ def encounter():
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # add data into database
-            db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
+            db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, user, request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
             # commits insert into database
             con.commit()
             return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
