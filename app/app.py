@@ -195,6 +195,30 @@ def search():
             cur.execute('SELECT * FROM encounter WHERE sealion_id=? and month =? and year =?', [sID,mon,ye])
             entry = cur.fetchall() 
             return render_template('searchPost.html',entry = entry) 
+        elif(mon !="" and sID !=""): #No year loc
+            cur.execute('SELECT * FROM encounter WHERE month=? and sealion_id =?', [mon,sID])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry) 
+        elif(sID !="" and ye !=""): #No month loc
+            cur.execute('SELECT * FROM encounter WHERE sealion_id=? and year =?', [sID,ye])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry) 
+        elif(sID !="" and loc !=""): #No month year
+            cur.execute('SELECT * FROM encounter WHERE sealion_id=? and location =?', [sID,loc])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry)
+        elif(mon !="" and ye !=""): #No sID loc
+            cur.execute('SELECT * FROM encounter WHERE mon=? and year =?', [mon,ye])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry)
+        elif(mon !="" and loc !=""): #No sID year
+            cur.execute('SELECT * FROM encounter WHERE mon=? and location =?', [mon,loc])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry)
+        elif(ye !="" and loc !=""): #No sID month
+            cur.execute('SELECT * FROM encounter WHERE year=? and location =?', [ye,loc])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry)
         elif(loc !=""):
             cur.execute('SELECT * FROM encounter WHERE location=?', [loc])
             entry = cur.fetchall()  
@@ -203,7 +227,6 @@ def search():
             cur.execute('SELECT * FROM encounter WHERE sealion_id=?', [sID])
             entry = cur.fetchall()  
             return render_template('searchPost.html',entry = entry) 
-           
         elif(mon != ""):
             cur.execute('SELECT * FROM encounter WHERE month=?', [mon])
             entry = cur.fetchall()
