@@ -8,6 +8,8 @@ from flask_session import Session
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os.path
+import random
+
 UPLOAD_FOLDER = 'static\images'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
@@ -113,9 +115,7 @@ def encounter():
             user = request.form.get('user')
             if request.form.get('user') == "":
                 return render_template('encounter.html', error="Must input user")
-            sealion_id = request.form.get('sealion_id')
-            if request.form.get('sealion_id') == "":
-                return render_template('encounter.html', error="Must input sealion_id")
+            sealion_id = (random.randint(0,9))
             year = request.form.get('year')
             if request.form.get('year') == "":
                 return render_template('encounter.html', error="Must input year")
