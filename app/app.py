@@ -8,7 +8,8 @@ from flask_session import Session
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 import os.path
-
+UPLOAD_FOLDER = 'static\images'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SECRET_KEY"] = 'super secret key'
@@ -18,9 +19,7 @@ Session(app)
 # Set path of app.py to use for database connections
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
 
-UPLOAD_FOLDER = os.path.join(BASE_DIR, "static\images")
 
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 def register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password):
     db_path = os.path.join(BASE_DIR, "database.db")
@@ -87,12 +86,15 @@ def login():
         cur = conn.cursor() 
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
-        if(check_password_hash(entry[0][6],password)):
-            message = "Login Successful!"
-            session["username"] = request.form.get("username")
-            return redirect(url_for('home'))
+        if(cur.rowcount != -1):
+            if(check_password_hash(entry[0][6],password)):
+                message = "Login Successful!"
+                session["username"] = request.form.get("username")
+                return redirect(url_for('home'))
+            else:
+                message = 'ERROR: Invalid Credentials. Incorrect Password. Please try again.'
         else:
-            message = 'ERROR: Invalid Credentials. Please try again.'
+                message = 'ERROR: Invalid Credentials. Username does not exist. Please try again.'
         conn.close()
     return render_template('login.html', message=message)
 
@@ -129,6 +131,7 @@ def encounter():
             if request.form.get('location') == "":
                 return render_template('encounter.html', error="Must input location")
             # check if the post request has the file part
+                    # check if the post request has the file part
             if 'file' not in request.files:
                 flash('No file part')
                 return redirect(request.url)
@@ -140,7 +143,6 @@ def encounter():
                 return redirect(request.url)
             if file and allowed_file(file.filename):
                 filename = secure_filename(file.filename)
-                #filename = "ID" + sealion_id + "_" + 
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # add data into database
             db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
@@ -191,6 +193,28 @@ def search():
             entry = cur.fetchall()
             return render_template('searchPost.html',entry = entry) 
     return render_template('search.html', message=message)
+
+
+
+@app.route('/image', methods=['GET', 'POST'])
+def upload_file():
+    if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+            return redirect(request.url)
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        return render_template('image.html')
+    else:
+        return render_template('image.html')
 
 @app.route('/logout', methods=['GET','POST'])
 def logout():
