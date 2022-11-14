@@ -142,7 +142,7 @@ def encounter():
                 flash('No selected file')
                 return redirect(request.url)
             if file and allowed_file(file.filename):
-                fileVar = "ID" + str(sealion_id) + "_" + str(name)
+                fileVar = "ID" + str(sealion_id) + "_" + str(name) + ".jpg"
                 filename = secure_filename(fileVar)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # add data into database
