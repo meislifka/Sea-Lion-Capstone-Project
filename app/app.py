@@ -62,17 +62,20 @@ def register():
         cur = conn.cursor() 
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
-
-        #IT CORRECTLY IDENTFIES IF A USERNAME IS ALREADY IN THE TABLE AND DOESNT ADD IT BUT THE ERROR MESSAGE WONT THROW --HELP
-        if len(entry) == 0:
-            message = "Registration Successful!"
-            hashedpassword = generate_password_hash(password)
-            register_user_to_db(fName, lName, phoneNumber, occupation, email, username, hashedpassword)  
-            conn.close()  
-            return redirect(url_for('home'))
+        if(len(password)<8):
+            message = "Password must be longer than 8 characters"
+            return render_template('register.html', message=message)
         else:
-            message = "ERROR: Username taken. Please try again."
-        conn.close()
+            #IT CORRECTLY IDENTFIES IF A USERNAME IS ALREADY IN THE TABLE AND DOESNT ADD IT BUT THE ERROR MESSAGE WONT THROW --HELP
+            if len(entry) == 0:
+                message = "Registration Successful!"
+                hashedpassword = generate_password_hash(password)
+                register_user_to_db(fName, lName, phoneNumber, occupation, email, username, hashedpassword)  
+                conn.close()  
+                return redirect(url_for('home'))
+            else:
+                message = "ERROR: Username taken. Please try again."
+            conn.close()
     return render_template('register.html', message=message)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -87,12 +90,13 @@ def login():
         cur = conn.cursor() 
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
+        message = ""
         print(entry)
         if(entry):
             if(check_password_hash(entry[0][6],password)):
                 message = "Login Successful!"
                 session["username"] = request.form.get("username")
-                return redirect(url_for('home'))
+                #return redirect(url_for('homelogged'))
             else:
                 message = 'ERROR: Invalid Credentials. Incorrect Password. Please try again.'
         else:
