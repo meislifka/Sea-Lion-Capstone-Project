@@ -174,7 +174,28 @@ def search():
         mon = request.form['month']
         ye = request.form['year']
 
-        if(loc !=""):
+        
+        if(loc !="" and sID !="" and mon !="" and ye !=""):#specify all
+            cur.execute('SELECT * FROM encounter WHERE location=? and month =? and sealion_id =? and year =?', [loc,mon,sID,ye])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry) 
+        elif(loc !="" and sID !="" and mon !=""): #No year
+            cur.execute('SELECT * FROM encounter WHERE location=? and month =? and sealion_id =?', [loc,mon,sID])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry) 
+        elif(loc !="" and sID !="" and ye !=""): #No month
+            cur.execute('SELECT * FROM encounter WHERE location=? and sealion_id =? and year =?', [loc,sID,ye])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry) 
+        elif(loc !="" and mon !="" and ye !=""): #No sID
+            cur.execute('SELECT * FROM encounter WHERE location=? and month =? and year =?', [loc,mon,ye])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry) 
+        elif(sID !="" and mon !="" and ye !=""): #No loc
+            cur.execute('SELECT * FROM encounter WHERE sealion_id=? and month =? and year =?', [sID,mon,ye])
+            entry = cur.fetchall() 
+            return render_template('searchPost.html',entry = entry) 
+        elif(loc !=""):
             cur.execute('SELECT * FROM encounter WHERE location=?', [loc])
             entry = cur.fetchall()  
             return render_template('searchPost.html',entry = entry)  
