@@ -86,7 +86,8 @@ def login():
         cur = conn.cursor() 
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
-        if(cur.rowcount != -1):
+        print(entry)
+        if(entry):
             if(check_password_hash(entry[0][6],password)):
                 message = "Login Successful!"
                 session["username"] = request.form.get("username")
@@ -94,7 +95,7 @@ def login():
             else:
                 message = 'ERROR: Invalid Credentials. Incorrect Password. Please try again.'
         else:
-                message = 'ERROR: Invalid Credentials. Username does not exist. Please try again.'
+               message = 'ERROR: Invalid Credentials. Username does not exist. Please try again.'
         conn.close()
     return render_template('login.html', message=message)
 
