@@ -10,7 +10,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import os.path
 import random
 
-UPLOAD_FOLDER = 'static\images'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
@@ -20,7 +19,7 @@ Session(app)
 
 # Set path of app.py to use for database connections
 BASE_DIR=os.path.dirname(os.path.abspath(__file__))
-
+UPLOAD_FOLDER=os.path.join(BASE_DIR, "static/images")
 
 
 def register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password):
@@ -143,7 +142,8 @@ def encounter():
                 flash('No selected file')
                 return redirect(request.url)
             if file and allowed_file(file.filename):
-                filename = secure_filename(file.filename)
+                fileVar = "ID" + str(sealion_id) + "_" + str(name)
+                filename = secure_filename(fileVar)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # add data into database
             db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, request.form.get('user'), request.form.get('sealion_id'), request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
