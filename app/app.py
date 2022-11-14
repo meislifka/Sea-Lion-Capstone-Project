@@ -91,7 +91,6 @@ def login():
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
         message = ""
-        print(entry)
         if(entry):
             if(check_password_hash(entry[0][6],password)):
                 message = "Login Successful!"
@@ -174,10 +173,7 @@ def search():
         sID = request.form['sealion_id']
         mon = request.form['month']
         ye = request.form['year']
-        #print("l "+loc)
-        #print("s "+sID)
-        #print("m "+mon)
-       # print("y "+ye)
+
         if(loc !=""):
             cur.execute('SELECT * FROM encounter WHERE location=?', [loc])
             entry = cur.fetchall()  
