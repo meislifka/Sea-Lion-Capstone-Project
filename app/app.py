@@ -111,9 +111,7 @@ def encounter():
             temp2 = db.fetchone()
             name = int(temp2[0]) + 1
             # Gather info from user
-            user = request.form.get('user')
-            if request.form.get('user') == "":
-                return render_template('encounter.html', error="Must input user")
+            user = session["username"]
             sealion_id = (random.randint(0,9))
             year = request.form.get('year')
             if request.form.get('year') == "":
