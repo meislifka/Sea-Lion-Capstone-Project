@@ -33,5 +33,9 @@
           {% endfor %}
         </table>
 
+        {% for image in imageList %}
+          <img src="{{url_for('static', filename=image)}}" align="middle" />
+        {% endfor %}
+
   </div>
 {% endblock %}
