@@ -190,84 +190,40 @@ def search():
         sID = request.form['sealion_id']
         mon = request.form['month']
         ye = request.form['year']
+        imageList =[]
 
+        searchParam = []
+        statement = 'SELECT * FROM encounter WHERE'
+        exist = False
+        if loc !="":
+            searchParam.append(loc)
+            statement = statement + ' location=?'
+            exist = True 
+        if mon !="":
+            searchParam.append(mon)
+            if exist:
+                statement = statement + ' and month=?'
+            else:
+                statement = statement + ' month=?'
+                exist = True
+        if ye !="":
+            searchParam.append(ye)
+            if exist:
+                statement = statement + ' and year=?'
+            else:
+                statement = statement + ' year=?'
+                exist = True
+        if sID !="":
+            searchParam.append(sID)
+            imageList = print_image_search(sID)
+            if exist:
+                statement = statement + ' and sealion_id=?'
+            else:
+                statement = statement + ' sealion_id=?'
+        cur.execute(statement, searchParam)
+        entry = cur.fetchall()
+        return render_template('searchPost.html',entry = entry, imageList=imageList) 
         
-        if(loc !="" and sID !="" and mon !="" and ye !=""):#specify all
-            cur.execute('SELECT * FROM encounter WHERE location=? and month =? and sealion_id =? and year =?', [loc,mon,sID,ye])
-            entry = cur.fetchall() 
-            imageList = print_image_search(sID)
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(loc !="" and sID !="" and mon !=""): #No year
-            cur.execute('SELECT * FROM encounter WHERE location=? and month =? and sealion_id =?', [loc,mon,sID])
-            entry = cur.fetchall() 
-            imageList = print_image_search(sID)
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(loc !="" and sID !="" and ye !=""): #No month
-            cur.execute('SELECT * FROM encounter WHERE location=? and sealion_id =? and year =?', [loc,sID,ye])
-            entry = cur.fetchall() 
-            imageList = print_image_search(sID)
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(loc !="" and mon !="" and ye !=""): #No sID
-            cur.execute('SELECT * FROM encounter WHERE location=? and month =? and year =?', [loc,mon,ye])
-            entry = cur.fetchall() 
-            imageList = print_image_search()
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(sID !="" and mon !="" and ye !=""): #No loc
-            cur.execute('SELECT * FROM encounter WHERE sealion_id=? and month =? and year =?', [sID,mon,ye])
-            entry = cur.fetchall() 
-            imageList = print_image_search(sID)
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(mon !="" and sID !=""): #No year loc
-            cur.execute('SELECT * FROM encounter WHERE month=? and sealion_id =?', [mon,sID])
-            entry = cur.fetchall() 
-            imageList = print_image_search(sID)
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(sID !="" and ye !=""): #No month loc
-            cur.execute('SELECT * FROM encounter WHERE sealion_id=? and year =?', [sID,ye])
-            entry = cur.fetchall() 
-            imageList = print_image_search(sID)
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(sID !="" and loc !=""): #No month year
-            cur.execute('SELECT * FROM encounter WHERE sealion_id=? and location =?', [sID,loc])
-            entry = cur.fetchall() 
-            imageList = print_image_search(sID)
-            return render_template('searchPost.html',entry = entry, imageList=imageList)
-        elif(mon !="" and ye !=""): #No sID loc
-            cur.execute('SELECT * FROM encounter WHERE mon=? and year =?', [mon,ye])
-            entry = cur.fetchall()
-            imageList = print_image_search() 
-            return render_template('searchPost.html',entry = entry, imageList=imageList)
-        elif(mon !="" and loc !=""): #No sID year
-            cur.execute('SELECT * FROM encounter WHERE mon=? and location =?', [mon,loc])
-            entry = cur.fetchall() 
-            imageList = print_image_search()
-            return render_template('searchPost.html',entry = entry, imageList=imageList)
-        elif(ye !="" and loc !=""): #No sID month
-            cur.execute('SELECT * FROM encounter WHERE year=? and location =?', [ye,loc])
-            entry = cur.fetchall() 
-            imageList = print_image_search()
-            return render_template('searchPost.html',entry = entry, imageList=imageList)
-        elif(loc !=""):
-            cur.execute('SELECT * FROM encounter WHERE location=?', [loc])
-            entry = cur.fetchall() 
-            imageList = print_image_search() 
-            return render_template('searchPost.html',entry = entry, imageList=imageList)  
-        elif(sID != ""):
-            cur.execute('SELECT * FROM encounter WHERE sealion_id=?', [sID])
-            entry = cur.fetchall()  
-            imageList = print_image_search(sID)
-            print(imageList)
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(mon != ""):
-            cur.execute('SELECT * FROM encounter WHERE month=?', [mon])
-            entry = cur.fetchall()
-            imageList = print_image_search()
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
-        elif(ye != ""):
-            cur.execute('SELECT * FROM encounter WHERE year=?', [ye])
-            entry = cur.fetchall()
-            imageList = print_image_search()
-            return render_template('searchPost.html',entry = entry, imageList=imageList) 
     return render_template('search.html', message=message)
 
 
