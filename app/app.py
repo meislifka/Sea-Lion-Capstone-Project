@@ -23,12 +23,13 @@ UPLOAD_FOLDER=os.path.join(BASE_DIR, "static/images")
 
 def print_image_search(ID = -1):
     image_list = os.listdir(UPLOAD_FOLDER)
+    print(type(image_list))
     result = []
     if (ID != -1):
         string = "ID" + str(ID)
         for image in image_list:
             if string in image:
-                result.append(string)
+                result.append("static/images/"+image)
     else:
         return result
     return result            
@@ -255,6 +256,7 @@ def search():
             cur.execute('SELECT * FROM encounter WHERE sealion_id=?', [sID])
             entry = cur.fetchall()  
             imageList = print_image_search(sID)
+            print(imageList)
             return render_template('searchPost.html',entry = entry, imageList=imageList) 
         elif(mon != ""):
             cur.execute('SELECT * FROM encounter WHERE month=?', [mon])
