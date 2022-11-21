@@ -254,9 +254,7 @@ def logout():
     if request.form.get('LogoutButton') == 'Logout':
         message = "Logout Successful!"
         session.clear()
-        return redirect(url_for('home'))
-    else:
-        return render_template('logout.html', message=message)
+    return render_template('logout.html', message=message)
 
 if __name__ == '__main__':
     app.run(debug=True)
