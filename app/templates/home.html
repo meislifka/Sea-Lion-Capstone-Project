@@ -1,21 +1,36 @@
 {% extends "layout.html" %}
 {% block content %}
   <div class="home">
-    <h1> Tracking Endangered Galapagos Sea Lions </h1>
+    <h2> Tracking Endangered Galapagos Sea Lions </h2>
     <h1> MACHINE LEARNING & CITIZEN SCIENCE & CONSERVATION RESEARCH </h1>
     <p>SeeLion uses an altered deepstack facial recognition algorithm to uniquely identify the faces of Galapagos sea lions. By assigning unique identifiers to each sea lion, 
       researches can analyze the migration patterns and general tendencies of the species in the hopes of better understanding why they are endangered.
     </p> 
-    
-    <img src="static\images\sealion.jpg" >
-    <video width="640" height="480" controls>
-      <source src="static/images/IMG_2532.MOV" type="video/mp4">
+
+    <div class="row">
+      <div class="column">
+        <img src="static\images\sealion.jpg" width="640" height="480" >
+      </div>
+      <div class="column">
+        <img src="static\images\sealion1.jpg" width="640" height="480"  >
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="column">
+        <img src="static\images\group.jpg" width="640" height="400" >
+      </div>
+      <div class="column">
+        <img src="static\images\water.jpg" width="640" height="400" >
+      </div>
     </div>
     
     <h1> How to Use </h1>
     <p> On this site you will find three additional tabs: About, Register, and Submit Encounter. To learn more about Galapagos Sea Lions, the project background, and the intended use
       of the site, visit the 'About' tab. To submit an encounter, credentials are required. This prevents any unintended harm to the species, and ensures that SeeLion is as accurate and 
      useful as possible. To obtain credentials, please visit the 'Register' tab and complete the form to request access to the encounter page.  </p>
-
+     <video width="1280" height="720" controls>
+      <source src="static/images/IMG_2532.MOV" type="video/mp4">
+    </div>
 
 {% endblock %}
