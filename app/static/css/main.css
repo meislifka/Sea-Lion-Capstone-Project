@@ -136,3 +136,9 @@ body {
     font-weight: bold ;
     border: 1px solid;
   }
+
+  #textboxid
+{
+    height:700px;
+    font-size:14pt;
+}
