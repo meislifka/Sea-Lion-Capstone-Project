@@ -158,7 +158,8 @@ def encounter():
             # submit an empty part without filename
             if file.filename == '':
                 flash('No selected file')
-                return redirect(request.url)
+                return render_template('encounter.html', error="Must upload image")
+                #return redirect(request.url)
             if file and allowed_file(file.filename):
                 fileVar = "ID" + str(sealion_id) + "_E" + str(name) + ".jpg"
                 filename = secure_filename(fileVar)
