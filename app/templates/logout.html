@@ -1,19 +1,8 @@
 {% extends "layout.html" %}
 {% block content %}
-  <head>
-    <title>Flask Intro - logout page</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
-  </head>
-  <body>
-    <div class="container">
-      <h1>Logout </h1>
-      <form action="" method="post">
-        <input class="btn btn-default" type="submit" value="Logout" name="LogoutButton">
-      </form>
-      {% if message %}
-        <p class="message"> <strong>{{ message }}</strong>
-      {% endif %}
-    </div>
-  </body>
+  <div class="container">
+    {% if message %}
+      <p class="message"> <strong>{{ message }}</strong>
+    {% endif %}
+  </div>
 {% endblock %}

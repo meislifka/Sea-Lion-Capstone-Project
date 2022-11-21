@@ -250,10 +250,11 @@ def upload_file():
 
 @app.route('/logout', methods=['GET','POST'])
 def logout():
-    message = None
-    if request.form.get('LogoutButton') == 'Logout':
-        message = "Logout Successful!"
+    if session.get("username")==None:
+        message = "Already logged out."
+    else:
         session.clear()
+        message = "Logout Successful!"
     return render_template('logout.html', message=message)
 
 if __name__ == '__main__':
