@@ -252,7 +252,7 @@ def upload_file():
 @app.route('/logout', methods=['GET','POST'])
 def logout():
     if session.get("username")==None:
-        message = "Already logged out."
+        message = "Not logged in."
     else:
         session.clear()
         message = "Logout Successful!"
