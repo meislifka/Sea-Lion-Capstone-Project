@@ -36,9 +36,6 @@ def print_image_search(ID = -1):
 
             
 
-
-
-
 def register_user_to_db(fName, lName, phoneNumber, occupation, email, username, password):
     db_path = os.path.join(BASE_DIR, "database.db")
     conn = sqlite3.connect(db_path)
@@ -61,7 +58,6 @@ def about():
     return render_template('about.html')
 
 
-
 # Route for handling the register page logic
 @app.route('/register', methods=["POST", "GET"])
 def register():
@@ -79,11 +75,10 @@ def register():
         cur = conn.cursor() 
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
-        if(len(password)<8):
+        if(len(password)<8): #Requires password to be greater than 8 characters
             message = "Password must be longer than 8 characters"
             return render_template('register.html', message=message)
         else:
-            #IT CORRECTLY IDENTFIES IF A USERNAME IS ALREADY IN THE TABLE AND DOESNT ADD IT BUT THE ERROR MESSAGE WONT THROW --HELP
             if len(entry) == 0:
                 message = "Registration Successful!"
                 hashedpassword = generate_password_hash(password)
@@ -95,6 +90,7 @@ def register():
             conn.close()
     return render_template('register.html', message=message)
 
+# Route for handling the login page logic
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     message = None
@@ -109,11 +105,11 @@ def login():
         entry = cur.fetchall()
         message = ""
         if(entry):
+            #Checking log in and comparing inputted password with passwords in database
             if(check_password_hash(entry[0][6],password)):
                 message = "Login Successful!"
                 session["username"] = request.form.get("username")
-                #return redirect(url_for('homelogged'))
-            else:
+            else: 
                 message = 'ERROR: Invalid Credentials. Incorrect Password. Please try again.'
         else:
                message = 'ERROR: Invalid Credentials. Username does not exist. Please try again.'
@@ -130,7 +126,7 @@ def encounter():
             temp1 = db.execute("SELECT max(ID) from encounter")
             temp2 = db.fetchone()
             name = int(temp2[0]) + 1
-            # Gather info from user
+            # Obtain info from user
             user = session["username"]
             sealion_id = (random.randint(0,9))
             year = request.form.get('year')
@@ -148,6 +144,10 @@ def encounter():
             location = request.form.get('location')
             if request.form.get('location') == "":
                 return render_template('encounter.html', error="Must input location")
+            if request.form.get('Notes') == "":
+                n = 'None'
+            else:
+                n = request.form.get('Notes')
             # check if the post request has the file part
                     # check if the post request has the file part
             if 'file' not in request.files:
@@ -165,7 +165,7 @@ def encounter():
                 filename = secure_filename(fileVar)
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             # add data into database
-            db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location) VALUES(?,?,?,?,?,?,?,?)",(name, user, sealion_id, request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location')))
+            db.execute("INSERT INTO encounter (ID, user, sealion_id, year, month, day, timeofday, location, Notes) VALUES(?,?,?,?,?,?,?,?,?)",(name, user, sealion_id, request.form.get('year'), request.form.get('month'), request.form.get('day'), request.form.get('timeofday'), request.form.get('location'), n))
             # commits insert into database
             con.commit()
             return render_template('encounterpost.html', name=name, user=user, sealion_id=sealion_id, year=year, month=month, day=day, timeofday=timeofday, location=location)
@@ -196,6 +196,7 @@ def search():
         searchParam = []
         statement = 'SELECT * FROM encounter WHERE'
         exist = False
+        #logic for user searchces 
         if loc !="":
             searchParam.append(loc)
             statement = statement + ' location=?'
@@ -249,6 +250,7 @@ def upload_file():
     else:
         return render_template('image.html')
 
+# Route for handling the logout logic
 @app.route('/logout', methods=['GET','POST'])
 def logout():
     if session.get("username")==None:
