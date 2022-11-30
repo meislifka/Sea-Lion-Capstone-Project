@@ -2,22 +2,23 @@
 
 ##### Users #####
 
+## Requirements
+<ul>
+  <li>Git</li>
+  <li>VS Code</li>
+  <li>Python</li>
+</ul>
+
 ## Installations
-
-Github
-git pull  https://github.com/meislifka/Sea-Lion-Capstone-Project.git
-
-pip install Flask flask-login flask-wtf 
-pip install sqlite3
-
+git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git
+pip install Flask flask-login 
+pip install Flask-Session
 
 
 
 ##### Developers #####
 
-## Installations
-
 ## VS Code extensions
 SQLite by alexcvzz - enables the ability to view and query databases in VSCode
 
-## Layout
+
