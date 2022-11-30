@@ -12,9 +12,7 @@
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
 pip install Flask flask-login \
-pip install Flask-Session \
-
-
+pip install Flask-Session 
 
 ## Developers
 
