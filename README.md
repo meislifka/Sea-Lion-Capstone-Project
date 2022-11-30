@@ -1,15 +1,15 @@
 # Sea-Lion-Capstone-Project
 
-## Users ##
+## Users
 
-## Requirements
+### Requirements
 <ul>
   <li>Git</li>
   <li>VS Code</li>
   <li>Python</li>
 </ul>
 
-## Installations
+### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git
 pip install Flask flask-login 
 pip install Flask-Session
