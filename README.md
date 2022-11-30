@@ -1,6 +1,6 @@
 # Sea-Lion-Capstone-Project
 
-##### Users #####
+## Users ##
 
 ## Requirements
 <ul>
