@@ -11,8 +11,8 @@
 
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
-pip install Flask flask-login \
-pip install Flask-Session 
+pip install Flask flask-login Flask-Session 
+
 
 ## Developers
 
@@ -25,8 +25,7 @@ pip install Flask-Session
 
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
-pip install Flask flask-login \
-pip install Flask-Session 
+pip install Flask flask-login Flask-Session 
 
 ## VS Code extensions
 SQLite by alexcvzz - enables the ability to view and query databases in VSCode
