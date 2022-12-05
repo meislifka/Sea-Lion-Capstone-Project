@@ -2,10 +2,11 @@
 {% block content %}
   <div class="home">
         <h1>Submit Encounters</h1>
-        <p>Encounter Number {{name}} Recorded </p>
-        <p>Submitted by {{user}}</p>
-        <p>Sealions {{sealion_id}} included in the encounter </p> 
-        <p>Encounter occured on Year: {{year}} Month: {{month}} Day: {{day}} Time of Day: {{timeofday}} </p>
-        <p>Sealion was spotted at {{location}}</p>
+        <p>Encounter number <strong>{{name}}</strong> recorded.</p>
+        <p>Submitted By: <strong>{{user}}</strong></p>
+        <p>Sea Lion ID Number: <strong>{{sealion_id}}</strong></p> 
+        <p>Date: <strong>{{month}}</strong> <strong>{{day}}</strong>, <strong>{{year}}</strong> </p>
+        <p>Timestamp: <strong>{{timeofday}}</strong></p>
+        <p>Location: <strong>{{location}}</strong></p>
   </div>
 {% endblock %}
