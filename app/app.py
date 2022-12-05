@@ -64,15 +64,27 @@ def register():
     message = None
     if request.method == 'POST':
         fName = request.form['fname']
+        if len(fName) == 0:
+            message = "Must Include First Name"
+            return render_template('register.html', message=message)
         lName = request.form['lname']
+        if len(lName) == 0:
+            message = "Must Include Last Name"
+            return render_template('register.html', message=message)
         phoneNumber = request.form['phoneNumber']
+        if len(phoneNumber) != 10:
+            message = "Enter Valid Phone Number"
+            return render_template('register.html', message=message)            
         occupation = request.form['occupation']
         email = request.form['email']
         username = request.form['username']
+        if len(username) == 0:
+            message = "Must Include Username"
+            return render_template('register.html', message=message)
         password = request.form['password']
         db_path = os.path.join(BASE_DIR, "database.db")
         conn = sqlite3.connect(db_path)
-        cur = conn.cursor() 
+        cur = conn.cursor()
         cur.execute('SELECT * FROM users WHERE username=?', [username])
         entry = cur.fetchall()
         if(len(password)<8): #Requires password to be greater than 8 characters
@@ -140,7 +152,7 @@ def encounter():
                 return render_template('encounter.html', error="Must input day")
             timeofday = request.form.get('timeofday')
             if request.form.get('timeofday') == "":
-                return render_template('encounter.html', error="Must input timeofday")
+                return render_template('encounter.html', error="Must input time of day")
             location = request.form.get('location')
             if request.form.get('location') == "":
                 return render_template('encounter.html', error="Must input location")
@@ -216,6 +228,9 @@ def search():
                 statement = statement + ' year=?'
                 exist = True
         if sID !="":
+            if int(sID) < 0:
+                message = "Invalid ID"
+                return render_template('search.html', message=message)
             searchParam.append(sID)
             imageList = print_image_search(sID)
             if exist:

@@ -73,8 +73,10 @@
           <br>
           <br>
           <input class="btn btn-default" type="submit" value="Submit">
-        
         </div>
     </div>
+  {% if message %}
+    <p class="message"> <strong>{{ message }}</strong>
+  {% endif %}
   </body>
 {% endblock %}
