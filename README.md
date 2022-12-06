@@ -1,6 +1,6 @@
 # Sea-Lion-Capstone-Project
 
-## Users
+# Users
 
 ### Requirements
 <ul>
@@ -12,10 +12,10 @@
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git 
 
-# Windows  
+### Windows  
 pip install Flask flask-login Flask-Session  
 
-# Linux 
+### Linux 
 pip install Flask flask-login Flask-Session \
 To get vidoes to play:
   <li>Git</li>
@@ -23,7 +23,7 @@ To get vidoes to play:
   <li>Python</li>
 
 
-### Developers
+# Developers
 ### Requirements
 <ul>
   <li>sudo apt update</li>
@@ -33,10 +33,10 @@ To get vidoes to play:
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git 
 
-# Windows  
+### Windows  
 pip install Flask flask-login Flask-Session  
 
-# Linux 
+### Linux 
 pip install Flask flask-login Flask-Session \
 To get vidoes to play:
   <li>Git</li>
