@@ -11,20 +11,28 @@
 
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
-pip install Flask flask-login Flask-Session 
 
+# Windows  
+pip install Flask flask-login Flask-Session  \
 
+# Linux 
+pip install Flask flask-login Flask-Session \
+To get vidoes to play:\
+  <li>Git</li>
+  <li>VS Code</li>
+  <li>Python</li>
 ## Developers
 
 ### Requirements
 <ul>
-  <li>Git</li>
-  <li>VS Code</li>
-  <li>Python</li>
+  <li>sudo apt update</li>
+  <li>sudo apt install ubuntu-restricted-extras</li>
 </ul>
 
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
+
+# Windows and Linux
 pip install Flask flask-login Flask-Session 
 
 ## VS Code extensions
