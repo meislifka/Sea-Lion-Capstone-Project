@@ -43,7 +43,7 @@ To get vidoes to play:
   <li>VS Code</li>
   <li>Python</li> 
 
-## VS Code extensions
+### VS Code extensions
 SQLite by alexcvzz - enables the ability to view and query databases in VSCode
 
 
