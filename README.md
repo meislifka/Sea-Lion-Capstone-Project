@@ -13,7 +13,7 @@
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
 
 # Windows  
-pip install Flask flask-login Flask-Session  \
+pip install Flask flask-login Flask-Session  
 
 # Linux 
 pip install Flask flask-login Flask-Session \
