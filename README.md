@@ -17,7 +17,7 @@ pip install Flask flask-login Flask-Session  \
 
 # Linux 
 pip install Flask flask-login Flask-Session \
-To get vidoes to play:\
+To get vidoes to play:
   <li>Git</li>
   <li>VS Code</li>
   <li>Python</li>
@@ -38,7 +38,7 @@ pip install Flask flask-login Flask-Session  \
 
 # Linux 
 pip install Flask flask-login Flask-Session \
-To get vidoes to play:\
+To get vidoes to play:
   <li>Git</li>
   <li>VS Code</li>
   <li>Python</li> 
