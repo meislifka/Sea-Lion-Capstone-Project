@@ -21,8 +21,9 @@ To get vidoes to play:\
   <li>Git</li>
   <li>VS Code</li>
   <li>Python</li>
-## Developers
 
+
+### Developers
 ### Requirements
 <ul>
   <li>sudo apt update</li>
@@ -32,8 +33,15 @@ To get vidoes to play:\
 ### Installations
 git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
 
-# Windows and Linux
-pip install Flask flask-login Flask-Session 
+# Windows  
+pip install Flask flask-login Flask-Session  \
+
+# Linux 
+pip install Flask flask-login Flask-Session \
+To get vidoes to play:\
+  <li>Git</li>
+  <li>VS Code</li>
+  <li>Python</li> 
 
 ## VS Code extensions
 SQLite by alexcvzz - enables the ability to view and query databases in VSCode
