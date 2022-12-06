@@ -10,7 +10,7 @@
 </ul>
 
 ### Installations
-git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
+git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git 
 
 # Windows  
 pip install Flask flask-login Flask-Session  
@@ -31,7 +31,7 @@ To get vidoes to play:
 </ul>
 
 ### Installations
-git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git \
+git clone https://github.com/meislifka/Sea-Lion-Capstone-Project.git 
 
 # Windows  
 pip install Flask flask-login Flask-Session  \
